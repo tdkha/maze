@@ -1,0 +1,19 @@
+[
+    {
+      "id": "1",
+      "matrix": [
+        [ "start_green" , "yellow" , "pink" , "green", "yellow", "pink", "end_green"]
+      ]
+    },
+    {
+      "id": "2",
+      "matrix": [
+        [ "empty" , "empty" , "empty" , "empty" , "blue" ,"end_blue" ],
+        [ "empty" , "empty" , "empty" , "blue" , "blue" ,"empty" ],
+        [ "empty" , "empty" , "blue" , "blue" , "empty" , "empty" ],
+        [ "empty" , "blue" , "blue" , "empty" , "empty" , "empty" ],
+        [ "start_blue" , "blue" ,  "empty" , "empty" , "empty" , "empty"]
+      ]
+    }
+  ]
+  
