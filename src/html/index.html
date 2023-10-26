@@ -11,24 +11,31 @@
   </head>
   <body>
     <section class="wrapper">
+      <section id="overlay"></section>
       <section id="menu-container">
-        <h1 style="font-size: 4rem">Maze Game</h1>
+        <h1 style="font-size: 4rem">Maze Game</h1> 
         <div class="buttons">
-          <button type="button">Play</button>
-          <button type="button">Reset</button>
-          <button type="button">Next</button>
+          <button type="button" id="start-over-btn">Start Over</button>
+          <button type="button" id="reset-btn">Reset</button>
         </div>
       </section>
 
       <section id="maze-container">
+        <h2 id="level"></h2>
+        <p id="msg"></p>
         <div id="problem-container">
-          <h2 id="level"></h2>
           <div id="maze"></div>
         </div>
         <div id="solution-container">
-          <div id="options"></div>
-          <button type="button">Submit</button>
-          <div id="solution"></div>
+          <div id="command-container">
+          </div>
+          <div id="function-container">
+          </div>
+        </div>
+        <div id="button-container">
+          <button type="button " id="clear-btn">Clear</button>
+          <button type="button" id="delete-btn">Delete</button>
+          <button type="button" id="submit-btn">Submit</button>
         </div>
       </section>
     </section>
