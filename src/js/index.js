@@ -4,12 +4,125 @@ import Matrix from "./matrix.mjs";
 //-------------------------------------------------------
 var activeBlock = null;
 var selectedBlock = null;
-const ALLOWED_COLOR = Matrix.getAllowedColors();
-const ALLOWED_DIRECTION = ["up", "down", "left", "right"];
+//-------------------------------------------------------
+// ROUND RESET
+//-------------------------------------------------------
+const reset = () => {
+  const maze = document.getElementById("maze");
+  maze.replaceChildren();
+  const commandDiv = document.getElementById("command-container");
+  commandDiv.replaceChildren();
+  const functionDiv = document.getElementById("function-container");
+  functionDiv.replaceChildren();
+  const msg = document.getElementById("msg");
+  msg.classList.remove("err-msg");
+  msg.innerHTML = "";
+  fetchData();
+};
+//-------------------------------------------------------
+// GAME RESET
+//-------------------------------------------------------
+const startOver = () => {
+  localStorage.setItem("level", 0);
+  location.reload();
+};
+
+//-------------------------------------------------------
+// ROUND LOST
+//-------------------------------------------------------
+const loseRound = async () => {
+  const msg = document.getElementById("msg");
+  msg.classList.add("err-msg");
+  msg.innerHTML = "Failed to reach the goal. Please try again.";
+  setTimeout(() => {
+    reset();
+  }, 2000);
+};
+//-------------------------------------------------------
+// ROUND WON
+//-------------------------------------------------------
+const winRound = () => {
+  const gameEnd = Matrix.finish();
+  const level = parseInt(localStorage.getItem("level"));
+  const newLevel = level + 1;
+  
+  //--------------------------------------------------------
+  // DOM element creation
+  //--------------------------------------------------------
+  const overlayContainer = document.getElementById("overlay");
+  const overLayHeader = document.createElement("h2");
+  const overlayText = document.createElement("p");
+  const btns = document.createElement("div");
+  const nextBtn = document.createElement("button");
+  //--------------------------------------------------------
+  // Class and attributes
+  //--------------------------------------------------------
+  btns.classList.add("buttons");
+
+  if (gameEnd == true) {
+    overlayContainer.classList.add("end-msg");
+    overLayHeader.innerText = `The end`;
+    overlayText.textContent = `Completed highest level: ${level}`;
+    nextBtn.classList.add("end-button");
+    nextBtn.innerHTML = "Play again";
+  } else {
+    overlayContainer.classList.add("success-msg");
+    overLayHeader.innerText = `Level ${localStorage.getItem("level")}`;
+    overlayText.textContent = "PASSED";
+
+    nextBtn.classList.add("success-button");
+    nextBtn.innerHTML = "Next";
+  }
+  btns.appendChild(nextBtn);
+  overlayContainer.appendChild(overLayHeader);
+  overlayContainer.appendChild(overlayText);
+  overlayContainer.appendChild(btns);
+
+  const nextRound = (e) => {
+    e.preventDefault();
+    overlayContainer.replaceChildren();
+    overlayContainer.classList.remove("success-msg");
+    location.reload();
+  };
+
+  if (gameEnd == true) {
+    nextBtn.addEventListener("click", startOver);
+  } else {
+    localStorage.setItem("level", newLevel);
+    nextBtn.addEventListener("click", nextRound);
+  }
+};
+//-------------------------------------------------------
+// CLEAR FUNCTION SLOT
+//-------------------------------------------------------
+const clearFunctionSlot = () => {
+  const functionSlots = document.querySelectorAll(".function-slot");
+  functionSlots.forEach((slot) => {
+    slot.children.length > 0 && slot.replaceChildren();
+  });
+};
+//-------------------------------------------------------
+// Submit
+//-------------------------------------------------------
+const submit = () => {
+  executeFuntions();
+};
+//-------------------------------------------------------
+// DELETE FUNCTION SLOT
+//-------------------------------------------------------
+const deleteFunctionSlot = () => {
+  if (selectedBlock) {
+    if (!selectedBlock.classList.contains("function-slot")) {
+      selectedBlock.remove();
+    }
+  }
+};
+
 //-------------------------------------------------------
 // CREATE MATRIX
 //-------------------------------------------------------
 const createMatrix = () => {
+  const ALLOWED_COLOR = Matrix.getAllowedColors();
   Matrix.create();
   //-------------------------------------------------------
   // DRAG AND DROP FUNCTIONS
@@ -135,6 +248,39 @@ const createMatrix = () => {
   });
 };
 //-------------------------------------------------------
+// INITIAL DATA FETCH
+//-------------------------------------------------------
+const fetchData = () => {
+  const level = localStorage.getItem("level") || null;
+  if (!level){
+    localStorage.setItem("level", 0);
+  }else{
+    document.getElementById("level").innerText = `Level ${localStorage.getItem(
+      "level"
+    )}`;
+  }
+
+  createMatrix();
+
+  const resetBtn = document.getElementById("reset-btn");
+  resetBtn.addEventListener("click", reset);
+  const startOverBtn = document.getElementById("start-over-btn");
+  startOverBtn.addEventListener("click", startOver);
+  const deleteBtn = document.getElementById("delete-btn");
+  deleteBtn.addEventListener("click", deleteFunctionSlot);
+  const clearBtn = document.getElementById("clear-btn");
+  clearBtn.addEventListener("click", clearFunctionSlot);
+  const submitBtn = document.getElementById("submit-btn");
+  submitBtn.addEventListener("click", submit);
+};
+
+fetchData(); // first fetch
+//-------------------------------------------------------
+// GLOBAL VERIABLES
+//-------------------------------------------------------
+const ALLOWED_COLOR = Matrix.getAllowedColors();
+
+//-------------------------------------------------------
 // GET ALL SELECTIONS
 //-------------------------------------------------------
 const getSelection = () => {
@@ -159,56 +305,8 @@ const getSelection = () => {
   });
   return result;
 };
-//-------------------------------------------------------
-// DELETE FUNCTION SLOT
-//-------------------------------------------------------
-const deleteFunctionSlot = () => {
-  if (selectedBlock) {
-    if (!selectedBlock.classList.contains("function-slot")) {
-      selectedBlock.remove();
-    }
-  }
-};
-//-------------------------------------------------------
-// CLEAR FUNCTION SLOT
-//-------------------------------------------------------
-const clearFunctionSlot = () => {
-  const functionSlots = document.querySelectorAll(".function-slot");
-  functionSlots.forEach((slot) => {
-    slot.children.length > 0 && slot.replaceChildren();
-  });
-};
-//-------------------------------------------------------
-// Submit
-//-------------------------------------------------------
-const submit = () => {
-  executeFuntions();
-};
-//-------------------------------------------------------
-// INITIAL DATA FETCH
-//-------------------------------------------------------
-const fetchData = () => {
-  const level = localStorage.getItem("level");
-  if (!level) {
-    localStorage.setItem("level", 0);
-  }
-  document.getElementById("level").innerText = `Level ${localStorage.getItem(
-    "level"
-  )}`;
 
-  createMatrix();
 
-  const resetBtn = document.getElementById("reset-btn");
-  resetBtn.addEventListener("click", reset);
-  const startOverBtn = document.getElementById("start-over-btn");
-  startOverBtn.addEventListener("click", startOver);
-  const deleteBtn = document.getElementById("delete-btn");
-  deleteBtn.addEventListener("click", deleteFunctionSlot);
-  const clearBtn = document.getElementById("clear-btn");
-  clearBtn.addEventListener("click", clearFunctionSlot);
-  const submitBtn = document.getElementById("submit-btn");
-  submitBtn.addEventListener("click", submit);
-};
 
 //-------------------------------------------------------
 // EXECUTE
@@ -305,92 +403,3 @@ const executeFuntions = async () => {
     }
   }
 };
-//-------------------------------------------------------
-// ROUND LOST
-//-------------------------------------------------------
-const loseRound = async () => {
-  const msg = document.getElementById("msg");
-  msg.classList.add("err-msg");
-  msg.innerHTML = "Failed to reach the goal. Please try again.";
-  setTimeout(() => {
-    reset();
-  }, 2000);
-};
-//-------------------------------------------------------
-// ROUND WON
-//-------------------------------------------------------
-const winRound = () => {
-  const gameEnd = Matrix.finish();
-  const level = parseInt(localStorage.getItem("level"));
-  const newLevel = level + 1;
-  localStorage.setItem("level", newLevel);
-  //--------------------------------------------------------
-  // DOM element creation
-  //--------------------------------------------------------
-  const overlayContainer = document.getElementById("overlay");
-  const overLayHeader = document.createElement("h2");
-  const overlayText = document.createElement("p");
-  const btns = document.createElement("div");
-  const nextBtn = document.createElement("button");
-  //--------------------------------------------------------
-  // Class and attributes
-  //--------------------------------------------------------
-  btns.classList.add("buttons");
-
-  if (gameEnd == true) {
-    overlayContainer.classList.add("end-msg");
-    overLayHeader.innerText = `The end`;
-    overlayText.textContent = `Completed highest level: ${level}`;
-    nextBtn.classList.add("end-button");
-    nextBtn.innerHTML = "Play again";
-  } else {
-    overlayContainer.classList.add("success-msg");
-    overLayHeader.innerText = `Level ${localStorage.getItem("level")}`;
-    overlayText.textContent = "PASSED";
-
-    nextBtn.classList.add("success-button");
-    nextBtn.innerHTML = "Next";
-  }
-  btns.appendChild(nextBtn);
-  overlayContainer.appendChild(overLayHeader);
-  overlayContainer.appendChild(overlayText);
-  overlayContainer.appendChild(btns);
-
-  const nextRound = (e) => {
-    e.preventDefault();
-    overlayContainer.replaceChildren();
-    overlayContainer.classList.remove("success-msg");
-    location.reload();
-  };
-
-  if (gameEnd == true) {
-    localStorage.setItem("level", level);
-    nextBtn.addEventListener("click", startOver);
-  } else {
-    nextBtn.addEventListener("click", nextRound);
-  }
-};
-//-------------------------------------------------------
-// ROUND RESET
-//-------------------------------------------------------
-const reset = () => {
-  const maze = document.getElementById("maze");
-  maze.replaceChildren();
-  const commandDiv = document.getElementById("command-container");
-  commandDiv.replaceChildren();
-  const functionDiv = document.getElementById("function-container");
-  functionDiv.replaceChildren();
-  const msg = document.getElementById("msg");
-  msg.classList.remove("err-msg");
-  msg.innerHTML = "";
-  fetchData();
-};
-//-------------------------------------------------------
-// GAME RESET
-//-------------------------------------------------------
-const startOver = () => {
-  localStorage.setItem("level", 0);
-  location.reload();
-};
-
-fetchData(); // first fetch

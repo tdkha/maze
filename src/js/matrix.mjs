@@ -396,11 +396,11 @@ const Matrix = {
   finish : () => {
     const maxLevel = storage.length - 1 ;
     const curLevel = parseInt(localStorage.getItem("level"));
-    const finished = curLevel > maxLevel ? true : false;
+    const finished = curLevel >= maxLevel ? true : false;
 
     console.log("Game end:",finished)
-    if(!finished) return true;
-    return false;
+    if(!finished) return false;
+    return true;
   }
 };
 export default Matrix;
