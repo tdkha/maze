@@ -6,6 +6,22 @@ stages:
   - build
   - test
 
+
+build_image:
+  stage: build
+  image: docker:20.10.16
+  services:
+    - name: docker:20.10.16-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+
+  before_script:
+    - docker version
+    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD
+  script:
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+
 e2e_test:
   stage: test
   image: node:18
@@ -19,19 +35,3 @@ e2e_test:
     - docker-compose up -d
     - sleep 15
     - docker-compose exec -T maze npm run test  
-
-build_image:
-  stage: build
-  image: docker:20.10.16
-  services:
-    - name: docker:20.10.16-dind
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"
-
-  before_script:
-    - npm install -g npm
-    - docker version
-    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD
-  script:
-    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
-    - docker push $IMAGE_NAME:$IMAGE_TAG
