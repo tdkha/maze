@@ -1,5 +1,6 @@
 import storage from "./storage.mjs";
 
+
 const Matrix = {
   getMatrixSize: (level) => {
     if (!level) throw new Error("No level found");
@@ -61,7 +62,6 @@ const Matrix = {
   },
   move: (color = null) => {
     try {
-      console.log("move forward");
       const level = localStorage.getItem("level");
       // POINTER
       const pointer = document.getElementById("pointer");
@@ -126,9 +126,6 @@ const Matrix = {
       const newParent = document.getElementById(
         `cell-${nextMovePositionX}-${nextMovePositionY}`
       );
-      // CHECKING FOR NEXT MOVE COLOR
-      const colorAllowed = Matrix.validateFuncColor(parent, color);
-      if (!colorAllowed) throw new Error("Invalid move (Color)");
       parent.replaceChildren(); // remove pointer
       newParent.appendChild(newPointer);
     } catch (err) {

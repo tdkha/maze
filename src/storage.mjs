@@ -31,7 +31,7 @@ const storage = [
         [ "start_blue" , "blue" ,  "empty" , "empty" , "empty" , "empty"]
       ]
     },
-    /* {
+     {
       "id": "3",
       "commands":{
         colors : ["green" , "pink" , "blue"],
@@ -46,6 +46,6 @@ const storage = [
         [ "blue" , "pink" ,  "pink" , "pink" , "blue" , "blue"  , "blue" , "blue", "blue", "blue", "start_blue"]
       ]
     }
-    */
+    
   ]
   export default storage;

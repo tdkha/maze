@@ -1,4 +1,5 @@
 import Matrix from "./matrix.mjs";
+import Stack from "./stack.mjs"
 //-------------------------------------------------------
 // GLOBAL VERIABLES
 //-------------------------------------------------------
@@ -27,71 +28,7 @@ const startOver = () => {
   location.reload();
 };
 
-//-------------------------------------------------------
-// ROUND LOST
-//-------------------------------------------------------
-const loseRound = async () => {
-  const msg = document.getElementById("msg");
-  msg.classList.add("err-msg");
-  msg.innerHTML = "Failed to reach the goal. Please try again.";
-  setTimeout(() => {
-    reset();
-  }, 2000);
-};
-//-------------------------------------------------------
-// ROUND WON
-//-------------------------------------------------------
-const winRound = () => {
-  const gameEnd = Matrix.finish();
-  const level = parseInt(localStorage.getItem("level"));
-  const newLevel = level + 1;
-  
-  //--------------------------------------------------------
-  // DOM element creation
-  //--------------------------------------------------------
-  const overlayContainer = document.getElementById("overlay");
-  const overLayHeader = document.createElement("h2");
-  const overlayText = document.createElement("p");
-  const btns = document.createElement("div");
-  const nextBtn = document.createElement("button");
-  //--------------------------------------------------------
-  // Class and attributes
-  //--------------------------------------------------------
-  btns.classList.add("buttons");
 
-  if (gameEnd == true) {
-    overlayContainer.classList.add("end-msg");
-    overLayHeader.innerText = `The end`;
-    overlayText.textContent = `Completed highest level: ${level}`;
-    nextBtn.classList.add("end-button");
-    nextBtn.innerHTML = "Play again";
-  } else {
-    overlayContainer.classList.add("success-msg");
-    overLayHeader.innerText = `Level ${localStorage.getItem("level")}`;
-    overlayText.textContent = "PASSED";
-
-    nextBtn.classList.add("success-button");
-    nextBtn.innerHTML = "Next";
-  }
-  btns.appendChild(nextBtn);
-  overlayContainer.appendChild(overLayHeader);
-  overlayContainer.appendChild(overlayText);
-  overlayContainer.appendChild(btns);
-
-  const nextRound = (e) => {
-    e.preventDefault();
-    overlayContainer.replaceChildren();
-    overlayContainer.classList.remove("success-msg");
-    location.reload();
-  };
-
-  if (gameEnd == true) {
-    nextBtn.addEventListener("click", startOver);
-  } else {
-    localStorage.setItem("level", newLevel);
-    nextBtn.addEventListener("click", nextRound);
-  }
-};
 //-------------------------------------------------------
 // CLEAR FUNCTION SLOT
 //-------------------------------------------------------
@@ -305,13 +242,9 @@ const getSelection = () => {
   });
   return result;
 };
-
-
-
 //-------------------------------------------------------
 // EXECUTE
 //-------------------------------------------------------
-
 const executeFuntions = async () => {
   try {
     const selection = getSelection();
@@ -323,83 +256,19 @@ const executeFuntions = async () => {
       functions[funcName] = newFunc;
     });
 
-    console.log(functions);
+    const newStack = new Stack(functions);
+    const success = await newStack.start();
 
-    const executeMove = async (move) => {
-      if (move.includes("up")) {
-        Matrix.move();
-      } else if (move.includes("left")) {
-        Matrix.rotateLeft();
-      } else if (move.includes("right")) {
-        Matrix.rotateRight();
-      }
-    };
-    const executeMoveWithColor = async (move, color) => {
-      if (move.includes("up")) {
-        Matrix.move(color);
-      } else if (move.includes("left")) {
-        Matrix.rotateLeft(color);
-      } else if (move.includes("right")) {
-        Matrix.rotateRight(color);
-      }
-    };
-    const executeFunction = async (funcName , color = null) => {
-      if (funcName in functions) {
-        const calls = functions[funcName];
-        for (let i = 0; i < calls.length; i++) {
-          const call = calls[i];
-
-          if (!call) continue; // skip undefined
-          if (call.startsWith("f")) {
-            const possibleColorFunc = call.split("_")[1] || null;
-            if (possibleColorFunc) {
-                const ptrParent = document.getElementById("pointer").parentNode;
-                const colorValidator = Matrix.validateFuncColor(ptrParent,color)
-                if(!colorValidator) throw new Error("Invalid move (Color)");
-                const functionPrefixExtract = call.split("_")[0];
-                await executeFunction(functionPrefixExtract, possibleColorFunc);
-              } else {
-                await executeFunction(call);
-              }
-            
-          } else {
-            //--------------------------------------------------
-            // Color and non-color parameterized call
-            //--------------------------------------------------
-            const possibleColor = call.split("_")[1] || undefined;
-            if (possibleColor) {
-              await executeMoveWithColor(call, possibleColor);
-            } else {
-              await executeMove(call);
-            }
-
-            const reached = document
-              .getElementById("pointer")
-              .parentNode.classList.contains("goal");
-            if (reached) {
-              winRound();
-              break;
-            }
-          }
-          await new Promise((resolve) => setTimeout(resolve, 500));
-        }
-      }
-    };
-    await executeFunction("f0"); // run the main function
-    loseRound();
-  } catch (err) {
-    console.log(err);
-    if (
-      err.message == "Error occured" ||
-      err.message == "Invalid move" ||
-      err.message == "Invalid move (Color)"
-    ) {
-      const msg = document.getElementById("msg");
-      msg.classList.add("err-msg");
-      msg.innerHTML = err.message;
-      setTimeout(() => {
-        reset();
-      }, 2000);
+    if (!success){
+      throw new Error("Failed to reach the goal.")
     }
+
+  } catch (err) {
+    const msg = document.getElementById("msg");
+    msg.classList.add("err-msg");
+    msg.innerHTML = err.message;
+    setTimeout(() => {
+      reset();
+    }, 2500);
   }
-};
+}
