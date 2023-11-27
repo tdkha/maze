@@ -1,7 +1,9 @@
 variables:
     IMAGE_NAME: $REGISTRY_USER/maze
     IMAGE_TAG: v1
+
 build_image:
+  stage: build
   image: docker:24
   services:
     - docker:24-dind
