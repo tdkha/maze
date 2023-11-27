@@ -14,8 +14,8 @@ e2e_test:
     - docker version
     - docker-compose version
   script:
-    - docker-compose down
-    - docker-compose up -d
+    - docker compose down
+    - docker compose up -d
     - sleep 15
     - docker compose exec -T maze  npm run test
 
