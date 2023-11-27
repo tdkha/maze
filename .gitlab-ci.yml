@@ -1,0 +1,16 @@
+variables:
+    IMAGE_NAME: $REGISTRY_USER/maze
+    IMAGE_TAG: v1
+build_image:
+  image: docker:24
+  services:
+    - docker:24-dind
+  stages:
+    - build
+  
+  before_script:
+    - docker version
+    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD 
+  script:
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker push $IMAGE_NAME:$IMAGE_TAG
