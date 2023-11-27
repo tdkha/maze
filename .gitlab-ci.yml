@@ -5,9 +5,6 @@ build_image:
   image: docker:24
   services:
     - docker:24-dind
-  stages:
-    - build
-  
   before_script:
     - docker version
     - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD 
