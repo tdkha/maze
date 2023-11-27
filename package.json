@@ -6,8 +6,7 @@
   "scripts": {
     "start": "vite --host",
     "build": "vite build --base=/maze/src",
-    "test": "cypress open",
-    "wdio": "wdio run ./wdio.conf.js"
+    "confidence-check": "wdio run ./wdio.conf.js"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +18,7 @@
     "@wdio/spec-reporter": "^8.24.0",
     "chai": "^4.3.10",
     "mocha": "^10.2.0",
+    "selenium-assistant": "^6.1.1",
     "vite": "^5.0.2"
   }
 }

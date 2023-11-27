@@ -19,5 +19,4 @@ RUN npm run build
 # Expose the port on which the app will run
 EXPOSE 5173
 
-# Start the HTTP server to serve the static files
 CMD ["npm", "run", "start"]
