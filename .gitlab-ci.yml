@@ -1,15 +1,22 @@
 variables:
-    IMAGE_NAME: $REGISTRY_USER/maze
-    IMAGE_TAG: v1
+  IMAGE_NAME: $REGISTRY_USER/maze
+  IMAGE_TAG: v1
+
+stages:
+  - build
+
 
 build_image:
   stage: build
-  image: docker:24
+  image: docker:20.10.16
   services:
-    - docker:24-dind
+    - name: docker:20.10.16-dind
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+
   before_script:
     - docker version
-    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD 
+    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD
   script:
     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
     - docker push $IMAGE_NAME:$IMAGE_TAG
