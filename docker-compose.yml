@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   app:
-    image: maze:v1
+    image: tieuduykha1810/maze:v1
     ports:
       - "5173:5173"
     restart: unless-stopped

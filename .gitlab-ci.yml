@@ -7,7 +7,7 @@ stages:
   - test
 
 before_script:
-  - npm install npm@version -g
+  - npm install npm@10 -g
 build_image:
   stage: build
   image: docker:20.10.16
