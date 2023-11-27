@@ -37,4 +37,4 @@ e2e_test:
     - docker compose down
     - docker compose up -d
     - sleep 15
-    - docker compose exec -T maze npm run test  
+    - docker compose exec -T tdkha1810/maze:v1 npm run test  
