@@ -4,9 +4,10 @@ variables:
 
 stages:
   - build
+  - test
 
 e2e_test:
-  stage: confidence-check
+  stage: test
   services:
     - webdriverio
   before_script:
@@ -16,7 +17,7 @@ e2e_test:
     - docker-compose down
     - docker-compose up -d
     - sleep 15
-    - docker compose exec -T maze  npm run confidence-check 
+    - docker compose exec -T maze  npm run test
 
 build_image:
   stage: build

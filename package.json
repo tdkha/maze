@@ -6,7 +6,7 @@
   "scripts": {
     "start": "vite --host",
     "build": "vite build --base=/maze/src",
-    "confidence-check": "wdio run ./wdio.conf.js"
+    "test": "wdio run ./wdio.conf.js"
   },
   "keywords": [],
   "author": "",
