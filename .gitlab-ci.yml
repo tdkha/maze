@@ -25,9 +25,9 @@ build_image:
 
 e2e_test:
   stage: test
-  image: docker:20.10.16
+  image: docker/compose:latest
   services:
-    - name: docker:20.10.16-dind
+    - name: docker:dind
   before_script:
     - docker version
     - docker compose version
