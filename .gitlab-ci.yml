@@ -27,7 +27,7 @@ e2e_test:
   stage: test
   image: docker:20.10.16
   services:
-    - name: docker:20.10.16-dind
+    - selenium/standalone-chrome
   before_script:
     - docker version
     - docker compose version
@@ -39,6 +39,4 @@ e2e_test:
     - docker images
     - docker run -d --name maze tdkha1810/maze  
     - sleep 15
-    - docker exec -d maze npm run start  
-    - sleep 15
-    - docker exec maze npm run test 
+    - docker exec maze npm run test --host=selenium__standalone-chrome
