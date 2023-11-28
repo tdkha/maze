@@ -37,6 +37,8 @@ e2e_test:
     - docker info
     - docker compose config
     - docker images
-    - docker run -d maze
+    - docker run -d --name maze tdkha1810/maze  
     - sleep 15
-    - docker compose exec -T maze npm run test  
+    - docker exec -it maze npm run start &  
+    - sleep 15  
+    - docker exec -it maze npm run test  
