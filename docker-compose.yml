@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   maze:
-    image: maze:v1
+    image: maze
     ports:
       - "5173:5173"
     restart: unless-stopped
