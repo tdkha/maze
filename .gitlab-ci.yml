@@ -38,6 +38,6 @@ e2e_test:
     - docker info
     - docker compose config
     - docker images
-    - docker-compose up -d
+    - docker compose up -d
     - sleep 15
     - docker compose exec -T maze npm run test
