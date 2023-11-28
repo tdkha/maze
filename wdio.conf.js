@@ -5,9 +5,6 @@ exports.config = {
     // ====================
     // WebdriverIO supports running e2e tests as well as unit and component tests.
     runner: 'local',
-    host: '0.0.0.0',
-    port: 5173,
-    path: '/wd/hub',
     //
     // ==================
     // Specify Test Files

@@ -1,7 +1,7 @@
 const { expect, browser, $, } = require('@wdio/globals');
 const chai = require('chai');
 
-const URL = "http://localhost:5500/";
+const URL = "http://localhost:5173/";
 const MAX_LEVEL = 3;
 let LEVEL = 0;
 

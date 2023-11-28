@@ -22,7 +22,6 @@ build_image:
   script:
     - docker build -t $IMAGE_NAME:$IMAGE_TAG .
     - docker push $IMAGE_NAME:$IMAGE_TAG
-
 e2e_test:
   stage: test
   image: docker:20.10.16
@@ -39,4 +38,5 @@ e2e_test:
     - docker images
     - docker run -d --name maze tdkha1810/maze  
     - sleep 15
-    - docker exec maze npm run test --host=selenium__standalone-chrome
+
+    - docker exec maze npm run test
