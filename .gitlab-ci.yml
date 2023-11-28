@@ -25,9 +25,9 @@ build_image:
 
 e2e_test:
   stage: test
-  image: docker/compose:latest
+  image: docker:20.10.16
   services:
-    - name: docker:dind
+    - name: docker:20.10.16-dind
   before_script:
     - docker version
     - docker compose version
@@ -36,6 +36,7 @@ e2e_test:
   script:
     - docker info
     - docker compose config
-    - docker compose up 
+    - docker images
+    - docker compose up -d
     - sleep 15
     - docker compose exec -T maze npm run test  
