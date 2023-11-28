@@ -36,6 +36,6 @@ e2e_test:
   script:
     - docker info
     - docker compose config
-    - docker compose up --verbose
+    - docker compose up 
     - sleep 15
     - docker compose exec -T tdkha1810/maze:v1 npm run test  
