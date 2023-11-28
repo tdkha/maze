@@ -28,15 +28,16 @@ e2e_test:
   services:
     - name: docker:20.10.16-dind
   before_script:
-    - docker version
+    - apk add --no-cache py3-pip py3-setuptools python3 python3-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker compose
     - docker compose version
     - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD
     - docker pull tdkha1810/maze
+    - docker pull selenium/standalone-chrome
   script:
     - docker info
     - docker compose config
     - docker images
-    - docker run -d --name maze tdkha1810/maze  
+    - docker-compose up -d
     - sleep 15
-
-    - docker exec maze npm run test
+    - docker compose exec -T maze npm run test
