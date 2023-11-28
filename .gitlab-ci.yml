@@ -26,7 +26,7 @@ e2e_test:
   stage: test
   image: docker:20.10.16
   services:
-    - selenium/standalone-chrome
+    - name: docker:20.10.16-dind
   before_script:
     - docker version
     - docker compose version
