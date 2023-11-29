@@ -34,7 +34,6 @@ e2e_test:
     - docker login $REGISTRY -u $REGISTRY_USER -p $REGISTRY_PASSWORD
     - docker pull $REGISTRY_IMAGE:latest
     - docker pull selenium/standalone-chrome
-    - docker tag $REGISTRY_IMAGE:$latest $REGISTRY_IMAGE:latest
   script:
     - docker info
     - docker compose config
