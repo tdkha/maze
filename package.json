@@ -20,5 +20,9 @@
     "mocha": "^10.2.0",
     "selenium-assistant": "^6.1.1",
     "vite": "^5.0.2"
+  },
+  "dependencies": {
+    "selenium-standalone": "^9.3.0",
+    "webdriverio": "^8.24.6"
   }
 }
