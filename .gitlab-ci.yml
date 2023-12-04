@@ -23,7 +23,7 @@ build_image:
 
 e2e_test:
   stage: test
-  image: node:8.10
+  image: node:20
   services:
     - name: selenium/standalone-firefox
   script:
