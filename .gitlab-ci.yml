@@ -6,8 +6,6 @@ stages:
   - build
   - test
 
-before_script:
-  - npm install npm@10 -g
 
 build_image:
   stage: build
