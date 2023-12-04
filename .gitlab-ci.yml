@@ -27,4 +27,5 @@ e2e_test:
   services:
     - name: selenium/standalone-firefox
   script:
+    - npm install
     - npm run test --host=selenium__standalone-firefox
