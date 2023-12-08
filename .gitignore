@@ -1,5 +1,3 @@
 node_modules
 *.txt
 dist/
-test/
-wdio.conf.js
