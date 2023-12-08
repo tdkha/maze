@@ -1,3 +1,4 @@
+require("chromedriver");
 const { expect, browser, $, } = require('@wdio/globals');
 const chai = require('chai');
 
