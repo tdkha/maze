@@ -8,6 +8,7 @@ body{
   padding: 0;
   margin: 0;
   color: black;
+  overflow-y: scroll;
 }
 :root {
   --primary-green: #05eb84;
@@ -25,21 +26,21 @@ body{
 }
 #menu-container {
   text-align: center;
-  height: 100%;
-  width: 20%;
+  height: 100dvh;
+  width: calc(20% - 20px);
   padding:0 20px;
   background-color: #4244e3;
   color: white;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: white;
+  overflow-y: visible;
 }
 #maze-container {
   text-align: center;
-  height: 100%;
+  height: 100dvh;
   width: 100%;
   color: black;
   display: flex;
@@ -49,7 +50,7 @@ body{
 }
 #problem-container{
   color: black;
-  min-height: 40vh;
+  min-height: 200px;
   display:flex;
   justify-content: center;
   align-items: center;
@@ -78,7 +79,7 @@ button {
   border-top: 2px solid #c4c4c4; 
   border-bottom: 2px solid #c4c4c4; 
   width: 100%;
-  min-height: 10px;
+  min-height: 200px;
   display: flex;
   flex-direction: row;
 }

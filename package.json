@@ -8,13 +8,14 @@
     "build": "vite build --base=/maze/src",
     "test": "wdio run ./wdio.conf.js",
     "check": "mocha ./test/specs/google.specs.js",
-    "wdio": "wdio run ./wdio.conf.js"
+    "wdio": "wdio run ./wdio.conf.js",
+    "e2e": "cypress run"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": "^16"
+    "node": "^20"
   },
   "devDependencies": {
     "@wdio/cli": "^8.24.16",
@@ -22,6 +23,8 @@
     "@wdio/mocha-framework": "^8.24.12",
     "@wdio/spec-reporter": "^8.24.12",
     "chai": "^4.3.10",
+    "cypress": "^13.6.1",
+    "cypress-wait-until": "^3.0.1",
     "mocha": "^10.2.0",
     "selenium-assistant": "^6.1.1",
     "selenium-standalone": "^9.3.0",

@@ -38,6 +38,7 @@ const Overlay = {
       overLayHeader.innerText = `Level ${localStorage.getItem("level")}`;
       overlayText.textContent = "PASSED";
   
+      nextBtn.id = "next-button";
       nextBtn.classList.add("success-button");
       nextBtn.innerHTML = "Next";
     }
